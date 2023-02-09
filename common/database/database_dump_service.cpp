@@ -353,7 +353,7 @@ void DatabaseDumpService::DatabaseDump()
 
 	if (IsDumpWithCompression() && !IsDumpOutputToConsole()) {
 		if (HasCompressionBinary()) {
-			LogInfo("Compression requested... Compressing dump [{}.sql]", GetDumpFileNameWithPath());
+			LogInfo("Compression requested. Compressing dump [{}.sql]", GetDumpFileNameWithPath());
 
 			if (IsTarAvailable()) {
 				Process::execute(
