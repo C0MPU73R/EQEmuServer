@@ -13,6 +13,7 @@
 #include <iostream>
 #include <mysqld_error.h>
 #include <string.h>
+#include "strings.h"
 
 #ifdef _WINDOWS
 #define snprintf	_snprintf
