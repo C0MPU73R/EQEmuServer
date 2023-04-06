@@ -325,7 +325,7 @@ void DatabaseDumpService::DatabaseDump()
 		}
 	}
 
-	LogSys.EnableConsoleLogging();
+	LogSys.LoadLogSettingsDefaults();
 
 	if (!pipe_file.empty()) {
 		std::string file = fmt::format("{}.sql", GetDumpFileNameWithPath());
