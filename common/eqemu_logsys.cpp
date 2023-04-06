@@ -580,6 +580,8 @@ void EQEmuLogSys::StartFileLogs(const std::string &log_name)
  */
 void EQEmuLogSys::SilenceConsoleLogging()
 {
+	std::copy(std::begin(log_settings), std::end(log_settings), std::begin(pre_silence_settings));
+
 	for (int log_index = Logs::AA; log_index != Logs::MaxCategoryID; log_index++) {
 		log_settings[log_index].log_to_console      = 0;
 		log_settings[log_index].is_category_enabled = 0;
@@ -593,10 +595,7 @@ void EQEmuLogSys::SilenceConsoleLogging()
  */
 void EQEmuLogSys::EnableConsoleLogging()
 {
-	for (int log_index = Logs::AA; log_index != Logs::MaxCategoryID; log_index++) {
-		log_settings[log_index].log_to_console      = Logs::General;
-		log_settings[log_index].is_category_enabled = 1;
-	}
+	std::copy(std::begin(pre_silence_settings), std::end(pre_silence_settings), std::begin(log_settings));
 }
 
 EQEmuLogSys *EQEmuLogSys::LoadLogDatabaseSettings()

@@ -324,6 +324,9 @@ public:
 	*/
 	LogSettings log_settings[Logs::LogCategory::MaxCategoryID]{};
 
+	// temporary bucket to re-load after silencing
+	LogSettings pre_silence_settings[Logs::LogCategory::MaxCategoryID]{};
+
 	struct LogEnabled {
 		bool log_to_file_enabled;
 		bool log_to_console_enabled;
