@@ -330,6 +330,7 @@ void EQEmuLogSys::ProcessConsoleMessage(
 				// string match to colors
 				std::map<std::string, rang::fgB> matches = {
 					{"missing", rang::fgB::red},
+					{"error",   rang::fgB::red},
 					{"ok",      rang::fgB::green},
 				};
 
