@@ -309,6 +309,7 @@ void DatabaseDumpService::DatabaseDump()
 		if (tables_to_dump.empty()) {
 			std::cerr << "No tables were specified" << std::endl;
 		}
+		return;
 	}
 	else {
 		const auto execute_command = fmt::format(
@@ -381,12 +382,6 @@ void DatabaseDumpService::DatabaseDump()
 			else {
 				LogInfo("Compression requested, but no available compression binary was found");
 			}
-
-			std::string sql_file = fmt::format("{}.sql", GetDumpFileNameWithPath());
-			if (File::Exists(sql_file)) {
-				std::filesystem::remove(sql_file);
-			}
-
 		}
 		else {
 			LogWarning("Compression requested but binary not found... Skipping...");
