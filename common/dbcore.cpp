@@ -332,15 +332,12 @@ MySQLRequestResult DBcore::QueryDatabaseMulti(const std::string &query)
 			pStatus = Error;
 		}
 
-		auto error_buffer = new char[MYSQL_ERRMSG_SIZE];
-		snprintf(error_buffer, MYSQL_ERRMSG_SIZE, "#%i: %s", mysql_errno(mysql), mysql_error(mysql));
-
 		// error logging
 		if (mysql_errno(mysql) > 0 && query.length() > 0 && mysql_errno(mysql) != 1065) {
 			std::string error_raw   = fmt::format("{}", mysql_error(mysql));
 			std::string mysql_err   = Strings::Trim(error_raw);
 			std::string clean_query = Strings::Replace(query, "\n", "");
-			LogMySQLError("[{}] ({}) query [{}]", mysql_err, mysql_errno(mysql), clean_query);
+			LogMySQLQuery("[{}] ({}) query [{}]", mysql_err, mysql_errno(mysql), clean_query);
 		}
 	}
 
@@ -355,9 +352,8 @@ MySQLRequestResult DBcore::QueryDatabaseMulti(const std::string &query)
 
 	// process each statement result
 	do {
-		uint32 row_count = 0;
-
-		MYSQL_RES *res = mysql_store_result(mysql);
+		uint32    row_count = 0;
+		MYSQL_RES *res      = mysql_store_result(mysql);
 
 		result = MySQLRequestResult(
 			res,
@@ -385,7 +381,12 @@ MySQLRequestResult DBcore::QueryDatabaseMulti(const std::string &query)
 
 		// more results? -1 = no, >0 = error, 0 = yes (keep looping)
 		if ((status = mysql_next_result(mysql)) > 0) {
+			if (mysql_errno(mysql) > 0) {
+				LogMySQLError("[{}] [{}]", mysql_errno(mysql), mysql_error(mysql));
+			}
+
 			// we handle errors elsewhere
+			return result;
 		}
 		index++;
 	} while (status == 0);
